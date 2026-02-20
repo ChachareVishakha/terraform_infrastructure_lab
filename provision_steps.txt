@@ -1,0 +1,174 @@
+🚀 COMPLETE STEPS TO PROVISION YOUR TERRAFORM PROJECT
+
+🖥 Step 1: Create a Terraform EC2 Instance (Control Machine)
+
+This will be your machine where Terraform runs.
+
+✅ Launch EC2:
+
+Go to AWS Console
+Launch Instance
+Choose:
+AMI: Amazon Linux 2
+Instance Type: t2.micro
+Key Pair: Create or use existing
+Security Group: Allow SSH (22) from your IP
+Launch the instance.
+
+---
+
+🔐 Step 2: Connect to Terraform Instance
+
+From your local machine:
+
+ssh -i your-key.pem ec2-user@<PUBLIC-IP>
+
+---
+
+⚙ Step 3: Install Terraform
+
+Inside EC2:
+
+sudo yum update -y
+sudo yum install -y yum-utils
+
+Add HashiCorp repo:
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+
+Install Terraform:
+sudo yum -y install terraform
+
+Verify:
+terraform -v
+
+---
+
+☁ Step 4: Install AWS CLI
+
+sudo yum install aws-cli -y
+
+Verify:
+aws --version
+
+---
+
+🔑 Step 5: Configure AWS Credentials
+
+Run:
+aws configure
+
+Enter:
+AWS Access Key
+AWS Secret Key
+Region: us-east-1
+Output format: json
+
+Now Terraform can talk to AWS.
+
+---
+
+📁 Step 6: Create Project Directory
+
+mkdir terraform-project
+cd terraform-project
+
+Create files:
+
+nano main.tf
+nano index.html
+nano style.css
+
+Paste your code into respective files.
+
+---
+
+🧠 Step 7: Initialize Terraform
+
+terraform init
+
+This: Downloads AWS provider
+      Initializes backend
+      Prepares environment
+
+---
+
+📋 Step 8: Validate Configuration
+
+terraform validate
+
+terraform validate
+
+---
+
+📊 Step 9: See Execution Plan
+
+terraform plan
+
+This shows: what will be created.
+
+---
+
+🚀 Step 10: Apply Infrastructure
+
+terraform apply
+
+Type: yes
+
+Terraform will:
+Create VPC
+Create Subnet
+Create IGW
+Create Route Table
+Create Security Group
+Launch EC2
+Install Nginx
+Deploy HTML/CSS app
+
+---
+
+🌍 Step 11: Access Application
+
+After apply completes:
+
+terraform output
+
+Copy public IP.
+
+Open browser:
+
+http://<PUBLIC-IP>
+
+ app is live 🚀
+
+---
+
+🧹 Step 12: Destroy Infrastructure (Important)
+
+To avoid charges:
+
+terraform destroy
+
+Type: yes
+
+Everything will be deleted safely.
+
+---
+
+🏗 Complete Architecture Flow
+Local Machine
+     ↓
+Terraform EC2 (Control Node)
+     ↓
+Terraform Commands
+     ↓
+AWS Infrastructure Created
+     ↓
+Application Deployed
+
+---
+
+🧠 How To Explain This In Interview
+
+say:
+
+"I created a separate EC2 instance as a Terraform control machine. I installed Terraform and AWS CLI, configured credentials, and used Terraform to provision a full AWS infrastructure including VPC networking and EC2. The web application was deployed automatically using user_data."
