@@ -1,0 +1,49 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_vpc" "myvpc" {
+  cidr_block       = "10.0.0.0/16"
+  tags = {
+    Name = "testvpc"
+  }
+
+  enable_dns_support   = true
+}
+
+resource "aws_subnet" "mysubnet1" {
+  vpc_id     = aws_vpc.myvpc.id
+  map_public_ip_on_launch  = true
+  cidr_block = "10.0.1.0/24"
+  availability_zone  = "us-east-1b"
+
+  tags = {
+    Name = "Sub1"
+  }
+}
+
+resource "aws_internet_gateway" "gw1" {
+  vpc_id = aws_vpc.myvpc.id
+  
+  tags = {
+    Name = "IG1"
+  }
+}
+
+resource "aws_route_table" "rt1" {
+  vpc_id = aws_vpc.myvpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw1.id
+  }
+
+  tags = {
+    Name = "custRT1"
+  }
+}
+
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.mysubnet1.id
+  route_table_id = aws_route_table.rt1.id
+}
